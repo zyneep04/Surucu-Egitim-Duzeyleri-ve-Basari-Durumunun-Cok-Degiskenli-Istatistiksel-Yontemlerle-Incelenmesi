@@ -1,7 +1,7 @@
 # Surucu-Egitim-Duzeyleri-ve-Basari-Durumunun-Cok-Degiskenli-Istatistiksel-Yontemlerle-Incelenmesi
 #İçindekiler 
 
-#VERİ TANIMLAMA 3 
+#VERİ TANIMLAMA 3	  
 #VERİ ANALİZİ  5 
 #Sayısal Değişkenler 5 
 #Kategorik Değişkenler 8 
@@ -31,6 +31,5 @@
 #Kümeleme Analizi 81 
 #Hiyerarşik Kümeleme 83 
 #Hiyerarşik Olmayan Kümeleme (K-Means Kümeleme Yöntemi) 85 
-
-#Kümeleme Genel Değerlendirme ve Sonuç.................................................................................................... 89 
-#Kaynakça .................................................................................................................................................. 89
+#Kümeleme Genel Değerlendirme ve Sonuç 89 
+#Kaynakça
