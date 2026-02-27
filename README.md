@@ -1,0 +1,1 @@
+# Surucu-Egitim-Duzeyleri-ve-Basari-Durumunun-Cok-Degiskenli-Istatistiksel-Yontemlerle-Incelenmesi
