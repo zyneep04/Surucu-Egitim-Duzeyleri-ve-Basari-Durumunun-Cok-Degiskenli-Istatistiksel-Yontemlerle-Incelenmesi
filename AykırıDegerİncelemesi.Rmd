@@ -1,0 +1,51 @@
+---
+title: "AykırıDegerİncelemesi"
+author: "Zeynep ARSLAN"
+date: "2025-12-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+
+library(tidyverse)
+library(dplyr)
+drivers <- read.csv("C:/Users/lenovo/Desktop/S/DriversLicenseData.csv", sep=";", dec=",")
+
+
+
+veri_long <- drivers %>%
+  dplyr::select(Training, TheoryTest, SpeedControl, Confidence) %>%
+  tidyr::pivot_longer(
+    cols = c(TheoryTest, SpeedControl, Confidence),
+    names_to = "Degisken",
+    values_to = "Deger"
+  )
+
+
+```
+
+
+```{r}
+ggplot(veri_long, aes(x = Training, y = Deger)) +
+  geom_boxplot(outlier.color = "red", outlier.shape = 16) +
+  facet_wrap(~ Degisken, scales = "free_y") +
+  labs(
+    title = "Training Gruplarına Göre Aykırı Değer İncelemesi",
+    x = "Training",
+    y = "Skor"
+  ) +
+  theme_minimal() +
+  theme(
+    strip.text = element_text(size = 12, face = "bold"),
+    plot.title = element_text(hjust = 0.5, face = "bold")
+  )
+
+
+```
+
+

@@ -1,0 +1,112 @@
+---
+title: "Driver's Licence Dataset - Çarpıklık & Basıklık Analizi"
+author: "Zeynep ARSLAN"
+date: "2025-12-11"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,warning = FALSE, message = FALSE)
+```
+
+#Bu kodda, Driver's Licence veri setindeki nicel değişkenlere ait çarpıklık (skewness) ve
+#basıklık (kurtosis) değerleri hesaplanmış ve grafiksel olarak incelenmiştir.
+
+```{r}
+
+
+library(moments)
+library(ggplot2)
+library(tidyr)
+
+
+
+```
+
+
+```{r data-cleaning, include = FALSE}
+
+data <- read.csv("C:/Users/lenovo/Desktop/S/DriversLicenseData.csv", header = TRUE, sep = ";",stringsAsFactors = FALSE)
+str(data)
+
+
+data_clean <- data
+
+# Sayı içeren sütunlara virgül → nokta dönüşümü
+cols_to_fix <- 6:15   # Signals – Theory.est arası tüm sayısal kolonlar
+# Sayı içeren sütunlara virgül → nokta dönüşümü
+cols_to_fix <- 6:15   # Signals – Theory.est arası tüm sayısal kolonlar
+
+for (i in cols_to_fix) {
+  data_clean[[i]] <- gsub(",", ".", data_clean[[i]])
+  data_clean[[i]] <- as.numeric(data_clean[[i]])
+}
+
+```
+
+
+```{r}
+str(data_clean)
+numeric_vars <- data_clean[, sapply(data_clean, is.numeric)]
+colnames(numeric_vars)
+
+results <- data.frame(
+Variable = colnames(numeric_vars),
+Skewness = apply(numeric_vars, 2, skewness, na.rm = TRUE),
+Kurtosis = apply(numeric_vars, 2, kurtosis, na.rm = TRUE)
+)
+
+results
+
+
+
+
+```
+
+
+
+```{r}
+
+for (var in colnames(numeric_vars)) {
+print(
+ggplot(data_clean, aes_string(x = var)) +
+geom_histogram(bins = 20, alpha = 0.6, color = "black") +
+geom_density(color = "red", size = 1) +
+ggtitle(paste("Histogram & Density -", var)) +
+theme_minimal()
+)
+}
+
+
+
+long_data <- pivot_longer(
+  data_clean,
+  cols = c(Signals, Yield, SpeedControl, NightDrive, RoadSigns,
+           SteerControl, MirrorUsage, Confidence, Parking, TheoryTest),
+  names_to = "Variable",
+  values_to = "Value"
+)
+
+ggplot(long_data, aes(x = Value)) +
+  geom_histogram(aes(y = ..density..),
+                 bins = 20,
+                 fill = "lightblue",
+                 color = "black",
+                 alpha = 0.7) +
+  geom_density(color = "red", linewidth = 1) +
+  facet_wrap(~ Variable, scales = "free") +
+  theme_minimal() +
+  labs(
+    title = "Sürüş Performansı Değişkenleri için Histogram & Yoğunluk Grafikleri",
+    x = "Değer",
+    y = "Yoğunluk"
+)
+
+
+
+
+
+```
+
+
+

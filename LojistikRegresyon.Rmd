@@ -1,0 +1,216 @@
+---
+title: "Lojistik Regresyon Analizi"
+author: "Zeynep ARSLAN"
+date: "2025-12-30"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r, include=FALSE}
+
+
+# Gerekli Kütüphaneler
+library(haven)      # .sav dosyaları için
+library(tidyverse)  # Veri manipülasyonu ve görselleştirme
+library(broom)      # tidy() için
+
+library(MASS)       # Stepwise model
+library(nnet)       # Multinomial logistic
+library(ResourceSelection) # Hosmer-Lemeshow
+library(DescTools)         # Pseudo R^2
+library(ggplot2)       # Confusion matrix görselleştirme
+
+```
+
+```{r, include = FALSE}
+
+library(haven)
+drivers <- read.csv("C:/Users/lenovo/Desktop/S/DriversLicenseData.csv", sep=";", dec=",")
+
+```
+
+
+# Faktörleri tanımlama
+
+```{r}
+
+#Binary bağımlı değişken
+
+drivers$Qualified <- factor(drivers$Qualified, levels=c("No","Yes"))
+drivers$Qualified_num <- as.numeric(drivers$Qualified == "Yes")
+
+#Multinomial bağımlı değişken
+
+drivers$Training <- factor(drivers$Training, levels=c("None","Basic","Advanced"))
+drivers$Training <- relevel(drivers$Training, ref="None")
+
+#Opsiyonel diğer faktörler
+
+drivers$AgeGroup <- factor(drivers$AgeGroup, levels=c("Teenager","Young Adult","Middle Age"))
+drivers$AgeGroup <- relevel(drivers$AgeGroup, ref="Teenager")
+
+drivers$Reactions <- factor(drivers$Reactions, levels=c("Slow","Average","Fast"))
+drivers$Reactions <- relevel(drivers$Reactions, ref="Average")
+```
+
+# Binary Logistic Regression
+
+```{r}
+
+model_bin <- glm(Qualified ~ SpeedControl + Confidence + TheoryTest,family="binomial", data=drivers)
+
+summary(model_bin)
+
+
+```
+
+
+
+# Odds ratio ve %95 güven aralığı
+
+```{r}
+
+exp(coef(model_bin))
+exp(confint.default(model_bin))
+
+```
+
+
+# Stepwise Binary Logistic Regression
+
+```{r}
+
+step_bin <- MASS::stepAIC(model_bin, direction = "backward")
+summary(step_bin)
+exp(coef(step_bin))
+exp(confint.default(step_bin))
+
+```
+
+
+#Model Uyumu ve Pseudo R²
+
+```{r}
+library(DescTools)
+PseudoR2(step_bin,which=c("CoxSnell","Nagelkerke","McFadden"))
+
+library(ResourceSelection)
+hoslem.test(drivers$Qualified, fitted(step_bin))
+
+
+```
+
+
+# Tahmin ve Atama Tablosu
+
+```{r}
+
+drivers$pred_prob <- predict(step_bin, type="response")
+drivers$pred_class <- ifelse(drivers$pred_prob > 0.5, "Yes", "No") %>% factor(levels=c("No","Yes"))
+
+```
+
+#Confusion matrix ve doğruluk oranı
+
+```{r}
+
+
+conf_matrix_bin <- table(drivers$Qualified,drivers$pred_class)
+conf_matrix_bin
+sum(diag(conf_matrix_bin)) / sum(conf_matrix_bin)  # Doğru sınıflama oranı
+
+```
+
+# Binary Confusion Matrix Görselleştirme
+
+```{r}
+conf_df_bin <- as.data.frame(conf_matrix_bin)
+ggplot(conf_df_bin, aes(x=Var2, y=Freq, fill=Var1)) +
+geom_bar(stat="identity", position="dodge") +
+xlab("Tahmin") + ylab("Sayi") +
+labs(fill="Gercek") +
+theme_minimal()
+```
+
+
+# Multinomial Logistic Regression
+
+```{r}
+
+multi_model <- multinom(Training ~ SpeedControl + Confidence + TheoryTest, data=drivers)
+summary(multi_model)
+
+
+```
+
+
+# Odds ratio
+
+```{r}
+
+exp(coef(multi_model))
+
+```
+
+# Stepwise Multinomial Logistic Regression (Backward)
+
+```{r}
+
+step_multi <- stepAIC(multi_model, direction="backward")
+summary(step_multi)
+exp(coef(step_multi))
+```
+
+#Tahmin ve Confusion Matrix
+
+```{r}
+
+drivers$pred_training_step <- predict(step_multi, type="class")
+table_multi_step <- table(Gercek=drivers$Training, Tahmin=drivers$pred_training_step)
+table_multi_step
+sum(diag(table_multi_step)) / sum(table_multi_step)
+
+```
+
+#Multinomial Pseudo R²
+
+```{r}
+
+PseudoR2(step_multi,which=c("CoxSnell","Nagelkerke","McFadden"))
+
+
+
+```
+
+
+
+
+# Tahmin ve atama
+
+```{r}
+conf_matrix_multi <- table(drivers$Training, drivers$pred_training_step)
+conf_matrix_multi
+sum(diag(conf_matrix_multi)) / sum(conf_matrix_multi)
+ # Toplam doğru sınıflama oranı
+
+
+```
+
+
+#Confusion Matrix Görselleştirme
+
+```{r}
+conf_df_multi <- as.data.frame(conf_matrix_multi)
+ggplot(conf_df_multi, aes(x=Var2, y=Freq, fill=Var1)) +
+geom_bar(stat="identity", position="dodge") +
+xlab("Tahmin") + ylab("Sayi") +
+labs(fill="Gercek") +
+theme_minimal()
+
+
+```

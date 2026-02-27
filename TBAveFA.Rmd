@@ -1,0 +1,231 @@
+---
+title: "Temel Bileşenler Analizi"
+author: "Zeynep ARSLAN"
+date: "2025-12-24"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r,include=FALSE}
+
+packages <- c(
+  "PerformanceAnalytics",
+  "corrplot",
+  "Hmisc",
+  "matlib",
+  "psych",
+  "factoextra"
+)
+
+for (p in packages) {
+  if (!requireNamespace(p, quietly = TRUE)) {
+    install.packages(p, dependencies = TRUE)
+  }
+}
+
+library(PerformanceAnalytics)
+library(corrplot)
+library(Hmisc)
+library(matlib)
+library(psych)
+library(factoextra)
+
+
+```
+
+```{r}
+
+drivers <- read.csv("C:/Users/lenovo/Desktop/S/DriversLicenseData.csv", sep=";", dec=",")
+
+drivers_pca <- drivers[, c(  "SteerControl",
+  "MirrorUsage",
+  "NightDrive",
+  "Parking",
+  "RoadSigns",
+  "Signals",
+  "TheoryTest")]
+drivers_pca <- na.omit(drivers_pca)
+
+
+
+```
+
+#Korelasyon Analizi
+
+```{r}
+
+
+library(PerformanceAnalytics)
+chart.Correlation(drivers_pca, histogram = TRUE, pch = 19)
+
+library(corrplot)
+corrplot(cor(drivers_pca))
+
+korelasyon <- cor(drivers_pca)
+korelasyon
+
+
+
+
+```
+
+
+#Anlamlılık değerleri
+```{r}
+library(Hmisc)
+rcorr(as.matrix(drivers_pca), type = "pearson")
+
+
+
+
+
+```
+#Korelasyon matrisinin determinantı
+
+```{r}
+
+det(cor(drivers_pca))
+
+
+```
+
+#VIF / ters korelasyon matrisi
+
+```{r}
+
+library(matlib)
+invkor <- inv(korelasyon)
+colnames(invkor) <- rownames(invkor) <- colnames(korelasyon)
+invkor
+
+
+
+
+```
+
+#PCA uygulanabilirliği
+
+##KMO ve Anti-Image
+```{r}
+
+
+library(psych)
+KMO(drivers_pca)
+
+
+
+```
+
+
+
+
+##Bartlett Küresellik Testi
+```{r}
+
+
+cortest.bartlett(korelasyon, n= nrow(drivers_pca))
+
+
+
+```
+
+
+
+#Temel Bileşenler Analizi
+```{r}
+
+
+fit.pca <- prcomp(~., data = drivers_pca, scale = TRUE)
+
+fit.pca$rotation   # yükler
+
+
+
+
+```
+
+#Bilesen sayisina karar verme
+##Özdeğerler ve varyans açıklama oranları
+```{r}
+
+summary(fit.pca)
+
+eig <- (fit.pca$sdev)^2
+eig
+eig / sum(eig)
+
+```
+ 
+
+#Scree Plot
+```{r}
+
+
+plot(fit.pca, type = "line")
+
+library(factoextra)
+fviz_eig(fit.pca)
+
+
+
+```
+
+
+
+
+#İlk iki bileşenin yükleri
+```{r}
+
+
+fit.pca$rotation[, 1:2]
+
+
+
+```
+
+
+
+#Skorlar ve indeks oluşturma
+
+```{r}
+
+
+drivers$comp1 <- fit.pca$x[,1]
+drivers$comp2 <- fit.pca$x[,2]
+
+drivers$index <- drivers$comp1 + drivers$comp2
+
+
+
+```
+
+#Faktör Analizi
+```{r}
+
+fa_drivers <- principal(drivers_pca, nfactors = 2, rotate = "varimax")
+
+print(fa_drivers$loadings, digits = 3, cutoff = .40, sort = TRUE)
+
+fa_drivers$communality
+
+
+
+
+```
+
+#Faktör diyagramı
+
+```{r}
+
+fa.diagram(fa_drivers)
+
+
+
+
+```
+
+

@@ -1,0 +1,334 @@
+---
+title: "Manova"
+author: "Zeynep ARSLAN"
+date: "2025-12-13"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r , include=FALSE}
+
+library(tidyverse)
+library(ggpubr)
+library(rstatix)
+library(car)
+library(broom)
+library(dplyr)
+library(tidyr)
+library(haven)
+library(effects)
+library(heplots)
+library(biotools)
+library(gplots)
+
+```
+
+
+
+```{r}
+
+drivers <- read.csv("C:/Users/lenovo/Desktop/S/DriversLicenseData.csv", sep=";", dec=",")
+
+drivers$Gender     <- factor(drivers$Gender)
+drivers$AgeGroup  <- factor(drivers$AgeGroup)
+drivers$Race       <- factor(drivers$Race)
+drivers$Training   <- factor(drivers$Training,
+                             levels = c("None","Basic","Advanced"))
+drivers$Qualified  <- factor(drivers$Qualified)
+drivers$Reactions  <- factor(drivers$Reactions,
+                             levels=c("Slow","Average","Fast"))
+
+num_vars <- c("TheoryTest", "SpeedControl", "Confidence")
+
+drivers[num_vars] <- lapply(drivers[num_vars], function(x) {
+  as.numeric(gsub(",", ".", x))
+})
+str(drivers[, num_vars])
+
+
+```
+
+#1-TRAINING İÇİN TEK YÖNLÜ MANOVA
+#Faktör Tanımı
+
+```{r}
+drivers$Training <- factor(drivers$Training,
+                        levels = c("None","Basic","Advanced"))
+
+
+```
+
+#Grup Büyüklükleri
+
+```{r}
+drivers %>%
+  group_by(Training) %>%
+  summarise(N = n())
+
+
+```
+
+#Tanımlayıcı İstatistikler
+```{r}
+drivers %>%
+  group_by(Training) %>%
+  summarise(across(c(TheoryTest, SpeedControl, Confidence),
+                   list(mean = mean, sd = sd)))
+
+drivers %>%
+  group_by(AgeGroup) %>%
+  summarise(across(c(TheoryTest, SpeedControl, Confidence),
+                   list(mean = mean, sd = sd)))
+
+```
+
+#Ortalama Grafikleri
+```{r}
+
+#Training icin :
+
+plotmeans(TheoryTest ~ Training,
+          xlab = "Training",
+          ylab = "TheoryTest",
+          main = "Mean Plot\nwith 95% CI",
+          data = drivers)
+
+plotmeans(SpeedControl ~ Training,
+          xlab = "Training",
+          ylab = "SpeedControl",
+          main = "Mean Plot\nwith 95% CI",
+          data = drivers)
+
+plotmeans(Confidence ~ Training,
+          xlab = "Training",
+          ylab = "Confidence",
+          main = "Mean Plot\nwith 95% CI",
+          data = drivers)
+
+
+#Age Group icin :
+
+plotmeans(TheoryTest ~ AgeGroup,
+          xlab = "Age Group",
+          ylab = "TheoryTest",
+          main = "Mean Plot\nwith 95% CI",
+          data = drivers)
+
+plotmeans(SpeedControl ~ AgeGroup,
+          xlab = "Age Group",
+          ylab = "SpeedControl",
+          main = "Mean Plot\nwith 95% CI",
+          data = drivers)
+
+plotmeans(Confidence ~ AgeGroup,
+          xlab = "Age Group",
+          ylab = "Confidence",
+          main = "Mean Plot\nwith 95% CI",
+          data = drivers)
+
+
+```
+
+
+#Cok Degiskenli Normallik
+```{r}
+
+drivers %>%
+  dplyr::select(TheoryTest, SpeedControl, Confidence) %>%
+  mshapiro_test()
+
+
+
+```
+
+#Kovaryans Matrislerinin Homojenliği (Box’s M)
+```{r}
+
+box_m(drivers[, c("TheoryTest", "SpeedControl", "Confidence")], drivers$Training)
+
+
+```
+
+#Manova
+```{r}
+training_age_manova <- manova(cbind(TheoryTest, SpeedControl, Confidence) ~ Training,data=drivers)
+summary(training_age_manova, test = "Hotelling-Lawley")
+summary(training_age_manova, test = "Wilks")
+summary(training_age_manova, test = "Pillai")
+summary(training_age_manova, test = "Roy")
+
+
+etasq(training_age_manova, test="Pillai")
+```
+
+
+#Tek Tek Levene Testleri
+```{r}
+
+drivers %>%
+  pivot_longer(c(TheoryTest, SpeedControl, Confidence),
+               names_to = "variable",
+               values_to = "value") %>%
+  group_by(variable) %>%
+  levene_test(value ~ Training, center = mean)
+
+
+```
+
+
+#Test of Between-Subjects Effects /Farklilik Yaratan Grup
+```{r}
+
+summary.aov(training_age_manova)
+
+```
+
+
+#Coklu Karsilastirmalar (post-hoc)
+```{r}
+
+theory_aov <- aov(TheoryTest ~ Training, data = drivers)
+etasq(theory_aov)
+tukey_theory <- TukeyHSD(theory_aov, "Training")
+tukey_theory
+
+
+```
+
+
+```{r}
+speed_gh <- drivers %>%
+  games_howell_test(SpeedControl ~ Training)
+speed_gh
+
+```
+
+
+```{r}
+conf_gh <- drivers %>%
+  games_howell_test(Confidence ~ Training)
+conf_gh
+
+```
+
+
+```{r}
+numeric_vars <- drivers[, c(
+  "Signals", "Yield", "SpeedControl", "NightDrive",
+  "RoadSigns", "SteerControl", "MirrorUsage",
+  "Confidence", "Parking", "TheoryTest"
+)]
+
+cor_matrix <- cor(numeric_vars, use = "complete.obs")
+round(cor_matrix, 2)
+
+library(corrplot)
+
+corrplot(
+  cor_matrix,
+  method = "color",
+  type = "upper",
+  addCoef.col = "black",  
+  number.cex = 0.7,        
+  tl.col = "black",
+  tl.srt = 45
+)
+
+```
+
+
+#2-TRAINING VE REACTIONS İÇİN ÇİFT YÖNLÜ MANOVA
+```{r}
+
+
+library(biotools)
+
+Y <- as.matrix(drivers[, c("SpeedControl", "Confidence", "TheoryTest")])
+grup <- interaction(drivers$Training, drivers$Reactions, drop = TRUE)
+
+boxM(Y, grup)
+
+
+
+
+```
+#MANOVA
+```{R}
+
+drivers_cift <- manova(
+  cbind(SpeedControl, Confidence, TheoryTest) ~ Training * Reactions,
+  data = drivers
+)
+
+
+summary(drivers_cift, test = "Wilks")
+```
+# Partial Eta Squared 
+```{r}
+
+etasq(drivers_cift, test="Wilks")
+
+
+```
+
+# Test of Between Subjects # Farklilik yaratan degisken 
+```{r}
+
+
+summary.aov(drivers_cift)
+
+etasq(aov(SpeedControl ~ Training * Reactions, data = drivers))
+etasq(aov(Confidence   ~ Training * Reactions, data = drivers))
+etasq(aov(TheoryTest   ~ Training * Reactions, data = drivers))
+
+```
+# Coklu Karsilastirmalar (Multiple Comparisons)
+```{r}
+
+
+m_tukey_drivers <- drivers %>%
+  pivot_longer(
+    c(SpeedControl, Confidence, TheoryTest),
+    names_to = "variables",
+    values_to = "value"
+  ) %>%
+  group_by(variables) %>%
+  tukey_hsd(value ~ Training * Reactions)
+
+m_tukey_drivers <- m_tukey_drivers[, c(1,2,4,3,6:10)]
+
+
+training_etki <- filter(m_tukey_drivers, term == "Training")
+training_etki
+
+```
+
+#TRAİNİNG ve REACTIONS iCin Etkilesim Grafikleri (Interaction Plots)
+
+```{r}
+
+ 
+
+attach(drivers)
+
+interaction.plot(Training, Reactions, SpeedControl,
+                 fun = mean, type = "l",
+                 legend = TRUE, col = 1:3, lwd = 2)
+
+interaction.plot(Training, Reactions, Confidence,
+                 fun = mean, type = "l",
+                 legend = TRUE, col = 1:3, lwd = 2)
+
+interaction.plot(Training, Reactions, TheoryTest,
+                 fun = mean, type = "l",
+                 legend = TRUE, col = 1:3, lwd = 2)
+
+detach(drivers)
+
+```
+
+
+

@@ -1,0 +1,146 @@
+---
+title: "Kümelem Analizi"
+author: "Zeynep ARSLAN"
+date: "2025-12-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, include=FALSE}
+
+library(haven)        # .sav dosyalarını okumak için
+library(dendextend)   # dendrogramlara ekstra özellikler
+library(factoextra)   # kümeleme görselleştirme
+library(cluster)      # clusplot için
+library(rstatix)      # ANOVA analizi için
+
+
+```
+
+
+
+```{r}
+
+library(haven)
+drivers <- read_sav("C:/Users/lenovo/Desktop/S/DriversKumelemeOrneklem.sav")
+
+
+
+driver_num <- drivers[, c("SpeedControl", "Confidence", "TheoryTest")]
+
+```
+
+#Korelasyon matrisi
+
+```{r}
+
+
+library(Hmisc)
+rcorr(as.matrix(driver_num), type = "pearson")
+
+
+
+
+```
+
+
+##Hiyerarşik Kümeleme
+
+
+# Uzaklık matrisi
+
+```{r}
+d <- dist(driver_num, method = "euclidean")
+
+```
+
+# Ward Yöntemi ile Kümeleme
+
+```{r}
+fit <- hclust(d, method="ward.D")
+```
+
+# Dendrogram 
+
+```{r, include=FALSE}
+dend <- as.dendrogram(fit)
+plot(color_branches(dend, main = "Drivers  Hiyerarsik Kumeleme Dendrogrami", k=3), )  
+
+```
+
+
+
+```{r}
+
+
+geneldend <- dend %>%
+  set("branches_lwd", 2) %>%
+  set("branches_k_color", k = 3) %>%
+  set("labels_cex", 1.1)
+
+plot(geneldend) 
+
+
+```
+
+
+##Hiyerarşik Olmayan Kümeleme
+
+
+
+#K-Means Uygulaması (k = 3)
+
+```{r}
+
+set.seed(95739487)
+km.res <- kmeans(driver_num, centers = 3, iter.max = 10, algorithm = "Lloyd")
+
+
+# Küme merkezleri
+t(km.res$centers)
+```
+#Küme Yapısının Görselleştirilmesi
+
+```{r}
+clusplot(driver_num, km.res$cluster,
+main = "Drivers  Hiyerarsik Kumeleme Dendrogrami",
+color = TRUE, shade = TRUE,
+labels = 2, lines = 0)
+
+```
+
+
+```{r}
+fviz_cluster(km.res, data = driver_num,
+palette = "jco",
+ggtheme = theme_minimal())
+
+```
+
+```{r}
+drivers$cluster <- as.factor(km.res$cluster)
+
+```
+
+##Kümelere Göre Ortalama Farklılıkların İncelenmesi (ANOVA)
+
+```{r}
+# SpeedControl
+speed_aov <- aov(SpeedControl ~ cluster, data = drivers)
+summary(speed_aov)
+
+
+# Confidence
+confidence_aov <- aov(Confidence ~ cluster, data = drivers)
+summary(confidence_aov)
+
+
+# TheoryTest
+theory_aov <- aov(TheoryTest ~ cluster, data = drivers)
+summary(theory_aov)
+
+```
+

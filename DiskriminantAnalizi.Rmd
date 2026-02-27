@@ -1,0 +1,460 @@
+---
+title: "Diskriminant Analizi"
+author: "Zeynep ARSLAN"
+date: "2025-12-28"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r,include=FALSE}
+
+knitr::opts_chunk$set(echo = TRUE)
+
+# Paket yükleme
+
+packages <- c(
+"haven", "MASS", "ggplot2", "funModeling", "dplyr", "rstatix",
+"corrplot", "biotools", "candisc", "klaR"
+)
+
+invisible(lapply(packages, function(p) {
+if (!require(p, character.only = TRUE)) {
+install.packages(p, dependencies = TRUE)
+library(p, character.only = TRUE)
+}
+}))
+
+
+```
+
+
+
+```{r}
+
+library(haven)
+drivers <- read.csv("C:/Users/lenovo/Desktop/S/DriversLicenseData.csv", sep=";", dec=",")
+
+
+
+```
+
+
+#Normallik
+
+```{r}
+
+library(funModeling)
+plot_num(drivers[, c("SpeedControl","Confidence","TheoryTest")])
+
+
+
+
+```
+
+
+#Univariate Normality
+
+```{r}
+
+shapiro.test(drivers$SpeedControl)
+shapiro.test(drivers$Confidence)
+shapiro.test(drivers$TheoryTest)
+
+
+
+
+```
+
+#Multivariate Normality
+
+```{r}
+
+library(dplyr)
+library(rstatix)
+
+drivers %>% 
+  dplyr::select(SpeedControl, Confidence, TheoryTest) %>%
+  mshapiro_test()
+
+
+
+
+```
+
+#Korelasyon (çoklu doğrusal bağlantı kontrolü)
+```{r}
+
+library(corrplot)
+corrplot(
+  cor(drivers[, c("SpeedControl","Confidence","TheoryTest")], 
+      method = "spearman"),
+  method = "number",
+  type="lower",
+  diag=TRUE,
+  number.cex=1.4,
+  col=gray.colors(1)
+  
+)
+
+
+
+
+
+```
+
+
+
+
+
+```{r}
+
+drivers_new <- drivers[,c("Qualified","Training","SpeedControl","Confidence","TheoryTest")]
+drivers_new <- na.omit(drivers_new)
+
+
+
+
+drivers_new$Qualified <- factor(
+  drivers_new$Qualified,
+  labels = c("No","Yes")
+)
+
+drivers_new$Training <- factor(
+  drivers_new$Training,
+  levels = c("None","Basic","Advanced")
+)
+
+
+summary(drivers_new)
+
+
+
+
+```
+
+
+
+
+
+
+
+
+
+#Kovaryans homojenliği (Box’s M)
+
+
+```{r}
+
+library(biotools)
+
+boxM(drivers_new[, c("SpeedControl","Confidence","TheoryTest")],
+     drivers_new$Qualified)
+
+
+
+```
+
+### Linear Discriminant Analysis – Binary
+
+```{r}
+lda_driver <- lda(
+  Qualified ~ SpeedControl + Confidence + TheoryTest,
+  data = drivers_new
+)
+
+lda_driver
+
+
+
+
+```
+
+
+# SPSS çıktısına benzer sonuçlar
+
+```{r}
+
+library(candisc)
+
+model_lm <- lm(
+  cbind(SpeedControl, Confidence, TheoryTest) ~ Qualified,
+  data = drivers_new
+)
+
+cd_driver <- candisc(model_lm, term = "Qualified")
+summary(cd_driver)
+
+
+
+```
+
+# Yapı Matrisi
+
+```{r}
+
+
+cd_driver$structure
+
+
+```
+
+# Standartlaştırılmış Katsayılar
+
+```{r}
+
+
+cd_driver$coeffs.std
+
+
+
+```
+# Ayırma Fonksiyonu
+
+```{r}
+
+
+cd_driver$coeffs.raw
+
+
+```
+# Sabit Terim
+
+```{r}
+
+
+cons <- apply(drivers_new[, c("SpeedControl","Confidence","TheoryTest")], 2, mean)
+(-cons) %*% (lda_driver$scaling)
+
+
+```
+# Grup Tahmini
+
+```{r}
+
+
+lda_pred <- predict(lda_driver)
+
+lda_pred$class      # Sınıflamalar
+lda_pred$x          # Diskriminant skorları
+
+
+
+```
+# Grafik
+
+
+```{r}
+
+ldahist(lda_pred$x, g = drivers_new$Qualified)
+
+
+
+```
+# Çapraz Tablo
+
+```{r}
+
+tablo <- table(drivers_new$Qualified, lda_pred$class)
+tablo
+
+
+
+```
+# Doğru Sınıflama Oranı
+
+```{r}
+
+
+classrate <- sum(diag(tablo)) / sum(tablo)
+classrate
+
+
+```
+# Nispi Şans Kriteri
+
+```{r}
+
+
+lda_driver$prior[1]^2 + lda_driver$prior[2]^2
+
+
+```
+
+# Orijinal – Tahmin Karşılaştırması
+
+```{r}
+
+
+comp <- cbind(drivers_new$Qualified, lda_pred$class)
+
+
+```
+
+# Stepwise Discriminant Analysis
+
+```{r}
+
+
+library(klaR)
+
+driver_step <- greedy.wilks(
+  Qualified ~ SpeedControl + Confidence + TheoryTest,
+  data = drivers_new
+)
+
+driver_step$results
+
+
+```
+
+### Linear Discriminant Analysis – Multi-class
+# Homogeneity of Covariances
+
+```{r}
+
+
+boxM(
+  drivers_new[, c("SpeedControl","Confidence","TheoryTest")],
+  drivers_new$Training
+)
+
+
+```
+
+# LDA – Training (3 grup)
+
+```{r}
+
+lda_training <- lda(
+  Training ~ SpeedControl + Confidence + TheoryTest,
+  data = drivers_new
+)
+
+lda_training
+
+
+
+```
+
+# Sabit Terimler
+
+```{r}
+
+cons2 <- apply(drivers_new[, c("SpeedControl","Confidence","TheoryTest")], 2, mean)
+(-cons2) %*% (lda_training$scaling)
+
+
+
+```
+
+# Grup Tahmini
+
+```{r}
+
+train_pred <- predict(lda_training)
+
+
+
+```
+
+# Grafikler
+
+```{r}
+
+par(mar = c(4,4,2,1))
+
+ldahist(train_pred$x[,1], g = drivers_new$Training)
+ldahist(train_pred$x[,2], g = drivers_new$Training)
+
+
+
+
+```
+# Çapraz Tablo
+
+```{r}
+
+tablo_train <- table(drivers_new$Training, train_pred$class)
+tablo_train
+
+
+
+```
+
+# Doğru Sınıflama Oranı
+
+```{r}
+
+classrate_train <- sum(diag(tablo_train)) / sum(tablo_train)
+classrate_train
+
+
+
+
+```
+# Nispi Şans Kriteri
+
+```{r}
+
+
+sum(lda_training$prior^2)
+
+
+```
+# 2 Boyutlu Grafik
+
+```{r}
+library(ggplot2)
+
+drivers_new$ld1 <- train_pred$x[,1]
+drivers_new$ld2 <- train_pred$x[,2]
+
+ggplot(drivers_new) +
+  geom_point(aes(ld1, ld2, color = Training), size = 2.5) +
+  theme_minimal() +
+  labs(
+    title = "Eğitim Düzeyine Göre Diskriminant Uzay",
+    x = "Ayırıcı Fonksiyon 1",
+    y = "Ayırıcı Fonksiyon 2"
+  )
+
+```
+# Territorial Map – SPSS
+
+```{r}
+
+library(klaR)
+partimat(Training ~ ld1 + ld2, data = drivers_new, method = "lda")
+
+
+
+```
+
+```{r}
+
+
+
+
+
+```
+
+```{r}
+
+
+
+
+
+```
+
+```{r}
+
+
+
+
+
+```

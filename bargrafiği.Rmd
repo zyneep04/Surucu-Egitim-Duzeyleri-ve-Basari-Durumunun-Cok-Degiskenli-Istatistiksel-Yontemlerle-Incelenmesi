@@ -1,0 +1,38 @@
+---
+title: "Kategorik Degisken Analizi"
+author: "Zeynep ARSLAN"
+date: "2025-12-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r}
+library(haven)
+library(tidyverse)
+
+dt <- read.csv("C:/Users/lenovo/Desktop/S/DriversLicenseData.csv",
+               sep = ";",
+               fill = TRUE)
+
+
+
+cat_vars <- c("Gender","AgeGroup", "Race", "Training", "Reactions", "Qualified")
+
+dt_long <- dt %>% 
+  select(all_of(cat_vars)) %>% 
+  pivot_longer(cols = everything(),
+               names_to = "variable",
+               values_to = "value")
+```
+
+```{r}
+ggplot(dt_long, aes(x = value)) +
+  geom_bar() +
+  facet_wrap(~variable, scales = "free_x") +
+  labs(title = "Kategorik Değişkenlerin Bar Grafikleri",
+       x = "Kategori",
+       y = "Frekans") +
+  theme_bw()
+```
