@@ -1,0 +1,7 @@
+{
+  "bundle": "t004_kumeleme",
+  "source_file": "KümelemeAnalizi.sas",
+  "source_blob_sha": "dd334d33eb9050efaf29b93fb67367068fdd5374",
+  "source_commit": "f8f0fe96f6aaf7236517eb7190edd1381c9d0bb6",
+  "notes": "Runs the repo's hierarchical clustering (PROC CLUSTER, Ward + PROC TREE dendrogram) and K-means clustering (PROC FASTCLUS, 3 clusters) on SpeedControl/Confidence/TheoryTest, then validates cluster separation with PROC GLM. Original read DriversKumelemeOrneklem from an SPSS .sav sample; this bundle builds an equivalent 40-row dataset in-line, sampled from the repo's own DriversLicenseData.csv. The three closing PROC GLM steps referenced DriversKumelemeOrneklem (which has no cluster column) in the original; retargeted to clust, the PROC FASTCLUS OUT= dataset that actually carries the cluster assignment, since that is the only dataset the GLM class/model statement could resolve against."
+}

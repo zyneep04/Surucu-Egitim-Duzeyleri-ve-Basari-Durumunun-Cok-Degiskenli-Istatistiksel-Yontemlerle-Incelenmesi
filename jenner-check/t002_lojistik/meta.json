@@ -1,0 +1,7 @@
+{
+  "bundle": "t002_lojistik",
+  "source_file": "LojistikRegresyon.sas",
+  "source_blob_sha": "fcf19422ab13d6fbf83a8ee9c091b6a602e5d9b0",
+  "source_commit": "f8f0fe96f6aaf7236517eb7190edd1381c9d0bb6",
+  "notes": "Runs the repo's three PROC LOGISTIC models (binary Qualified~Training scores, backward-stepwise selection, and multinomial Training~scores with link=glogit) plus the PROC FREQ classification tables. Original read Drivers from an SPSS .sav import; this bundle builds an equivalent 40-row Drivers dataset in-line, sampled from the repo's own DriversLicenseData.csv. Worked around a Jenner OUTPUT-statement parser bug on PREDPROBS=(individual) (documented valid PROC LOGISTIC syntax) by dropping the parens to PREDPROBS=individual; filed as a regression test upstream."
+}

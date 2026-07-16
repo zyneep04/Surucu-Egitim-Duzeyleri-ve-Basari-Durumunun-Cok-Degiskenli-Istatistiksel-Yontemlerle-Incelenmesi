@@ -1,0 +1,34 @@
+NOTE: Jenner v1.5.30 (build v1.5.30+unknown.20260715T062217Z.x86_64-unknown-linux-gnu)
+
+NOTE: Option OBS changed to 100.
+NOTE: DATA Drivers
+
+NOTE: Processing inline DATALINES (40 lines)
+
+NOTE: Read 40 rows from DATALINES.
+NOTE: Wrote Drivers (40 rows, 17 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: PROC PRINCOMP data=Drivers
+
+NOTE: Using Python sklearn version 1.9.0
+NOTE: Eigenvalues of the Correlation Matrix:
+NOTE:   Prin1: Eigenvalue=1.665659  Proportion=0.5552  Cumulative=0.5552
+NOTE:   Prin2: Eigenvalue=0.942883  Proportion=0.3143  Cumulative=0.8695
+NOTE:   Prin3: Eigenvalue=0.391458  Proportion=0.1305  Cumulative=1.0000
+NOTE: Eigenvectors:
+NOTE:   Variable          Prin1      Prin2      Prin3
+NOTE:   TheoryTest     -0.289822    0.953670   -0.080729
+NOTE:   SpeedControl   -0.684232   -0.147482    0.714195
+NOTE:   Confidence     -0.669200   -0.262227   -0.695275
+NOTE: Number of Observations: 40
+NOTE: Analysis based on Correlation Matrix
+NOTE: ODS plot written: princomp_scree.spec.json
+NOTE: PROC PRINCOMP ODS Graphics generated.
+NOTE: PROC PRINCOMP completed.
+NOTE: PROC FACTOR data=Drivers
+
+NOTE: Using Python numpy version 2.5.1
+NOTE: ODS plot written: factor_scree.spec.json
+NOTE: PROC FACTOR completed.

@@ -1,0 +1,15 @@
+{
+  "_captured_at": "2026-07-16T14:30:46Z",
+  "_captured_run_id": "r_e5afbb254ec04590a6232e6ff28b1d19",
+  "status": "ok",
+  "exit_code": 0,
+  "log_contains": [
+    "NOTE: Wrote Drivers (40 rows, 17 columns).",
+    "NOTE: PROC DISCRIM data=drivers method=Normal pool=Test",
+    "NOTE: Resubstitution Error Rate: 0.2750",
+    "NOTE: PROC GLM data=drivers",
+    "NOTE: PROC GLM statement used."
+  ],
+  "log_does_not_contain": ["ERROR:", "[JENNER-ERROR"],
+  "diagnostics": {"parse_warnings": [], "runtime_warnings": []}
+}

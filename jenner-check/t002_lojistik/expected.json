@@ -1,0 +1,15 @@
+{
+  "_captured_at": "2026-07-16T14:30:46Z",
+  "_captured_run_id": "r_f96b5fc03c134ac98be4acff6cd84adc",
+  "status": "ok",
+  "exit_code": 0,
+  "log_contains": [
+    "NOTE: Wrote Drivers (40 rows, 17 columns).",
+    "NOTE: PROC LOGISTIC data=Drivers",
+    "NOTE: Output dataset outdata_bin written with 40 observations.",
+    "NOTE: Output dataset outdata_step written with 40 observations.",
+    "NOTE: Output dataset outdata_multi written with 40 observations."
+  ],
+  "log_does_not_contain": ["ERROR:", "[JENNER-ERROR"],
+  "diagnostics": {"parse_warnings": [], "runtime_warnings": []}
+}

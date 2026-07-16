@@ -1,0 +1,56 @@
+NOTE: Jenner v1.5.30 (build v1.5.30+unknown.20260715T062217Z.x86_64-unknown-linux-gnu)
+
+NOTE: Option OBS changed to 100.
+NOTE: DATA Drivers
+
+NOTE: Processing inline DATALINES (40 lines)
+
+NOTE: Read 40 rows from DATALINES.
+NOTE: Wrote Drivers (40 rows, 17 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: PROC DISCRIM data=drivers method=Normal pool=Test
+
+NOTE: Using Python sklearn version 1.9.0 for discriminant analysis
+NOTE: Class Frequencies:
+NOTE:   Advanced: 15
+NOTE:   Basic: 11
+NOTE:   None: 14
+NOTE: Class Means:
+NOTE:   Advanced: 59.0107, 55.2040, 73.4307
+NOTE:   Basic: 54.3300, 52.1909, 60.7036
+NOTE:   None: 36.0886, 33.0714, 65.6021
+NOTE: Resubstitution Error Rate: 0.2750
+NOTE: Confusion Matrix:
+NOTE:     10    3    2
+NOTE:      3    7    1
+NOTE:      0    2   12
+NOTE: PROC DISCRIM: 40 observations, 3 variables, method=Normal, pool=Test
+NOTE: PROC GLM data=drivers
+
+NOTE: Warning message:
+NOTE: In file(paste0("<wrapper>", .jen_rfd), "rb") :
+NOTE:   using 'raw = TRUE' because '<wrapper>' is a fifo or pipe
+NOTE: Warning message:
+NOTE: In readLines(file("stdin")) : incomplete final line found on 'stdin'
+NOTE: ODS plot written: glm_residuals_vs_predicted.spec.json
+NOTE: ODS plot written: glm_residual_histogram_panel.spec.json
+NOTE: ODS plot written: glm_residuals_vs_obs_order.spec.json
+NOTE: ODS plot written: glm_qq_plot.spec.json
+NOTE: PROC GLM ODS Graphics generated.
+NOTE: PROC GLM statement used.
+NOTE: PROC GLM data=drivers
+
+NOTE: Warning message:
+NOTE: In file(paste0("<wrapper>", .jen_rfd), "rb") :
+NOTE:   using 'raw = TRUE' because '<wrapper>' is a fifo or pipe
+NOTE: Warning message:
+NOTE: In readLines(file("stdin")) : incomplete final line found on 'stdin'
+NOTE: ODS plot written: glm_residuals_vs_predicted.spec.json
+NOTE: ODS plot written: glm_residual_histogram_panel.spec.json
+NOTE: ODS plot written: glm_residuals_vs_obs_order.spec.json
+NOTE: ODS plot written: glm_qq_plot.spec.json
+NOTE: ODS plot written: glm_lsmeans_Training*Reactions.spec.json
+NOTE: PROC GLM ODS Graphics generated.
+NOTE: PROC GLM statement used.

@@ -1,0 +1,60 @@
+                       The PRINCOMP Procedure
+
+                    Observations          40
+                    Variables              3
+
+                       Simple Statistics
+
+Variable            Mean          StdDev
+
+TheoryTest      67.19075        16.69181
+SpeedControl    49.70075        15.85714
+Confidence      46.62900        15.80612
+
+                    Correlation Matrix
+
+                  TheoryTest  SpeedControl  Confidence
+
+TheoryTest            1.0000        0.1751      0.1092
+SpeedControl          0.1751        1.0000      0.6048
+Confidence            0.1092        0.6048      1.0000
+
+             Eigenvalues of the Correlation Matrix
+
+                  Eigenvalue    Difference    Proportion    Cumulative
+
+             1    1.66565914    0.72277627        0.5552        0.5552
+             2    0.94288286    0.55142487        0.3143        0.8695
+             3    0.39145800    0.00000000        0.1305        1.0000
+
+                           Eigenvectors
+
+                Prin1       Prin2       Prin3
+
+TheoryTest   -0.289822    0.953670   -0.080729
+SpeedControl -0.684232   -0.147482    0.714195
+Confidence   -0.669200   -0.262227   -0.695275
+
+Eigenvalues of the Correlation Matrix
+             Eigenvalue   Difference   Proportion   Cumulative
+  Factor 1       1.6657       0.7228       0.5552       0.5552
+  Factor 2       0.9429       0.5514       0.3143       0.8695
+  Factor 3       0.3915       0.0000       0.1305       1.0000
+
+Factor Pattern
+                Factor1    Factor2
+TheoryTest      -0.0786     0.9956
+SpeedControl    -0.8853     0.1287
+Confidence      -0.9003     0.0166
+
+Final Communality Estimates
+TheoryTest       0.9974
+SpeedControl     0.8003
+Confidence       0.8108
+
+Variance Explained by Each Factor
+SS Loadings              1.6004     1.0081
+Proportion Var           0.5335     0.3360
+Cumulative Var           0.5335     0.8695
+
+Overall MSA: 0.5199

@@ -1,0 +1,14 @@
+{
+  "_captured_at": "2026-07-16T14:30:46Z",
+  "_captured_run_id": "r_284e71e8eb854c4c921fd248531fa714",
+  "status": "ok",
+  "exit_code": 0,
+  "log_contains": [
+    "NOTE: Wrote DriversKumelemeOrneklem (40 rows, 4 columns).",
+    "NOTE: PROC CLUSTER data=DriversKumelemeOrneklem method=Ward",
+    "NOTE: PROC FASTCLUS data=DriversKumelemeOrneklem maxclusters=3",
+    "NOTE: PROC GLM data=clust"
+  ],
+  "log_does_not_contain": ["ERROR:", "[JENNER-ERROR"],
+  "diagnostics": {"parse_warnings": [], "runtime_warnings": []}
+}

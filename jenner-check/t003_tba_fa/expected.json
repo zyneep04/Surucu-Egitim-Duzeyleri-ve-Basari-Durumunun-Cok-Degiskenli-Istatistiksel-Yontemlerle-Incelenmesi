@@ -1,0 +1,15 @@
+{
+  "_captured_at": "2026-07-16T14:30:46Z",
+  "_captured_run_id": "r_7382fb1dac454412828d24d1a4c4eb41",
+  "status": "ok",
+  "exit_code": 0,
+  "log_contains": [
+    "NOTE: Wrote Drivers (40 rows, 17 columns).",
+    "NOTE: PROC PRINCOMP data=Drivers",
+    "NOTE: PROC PRINCOMP completed.",
+    "NOTE: PROC FACTOR data=Drivers",
+    "NOTE: PROC FACTOR completed."
+  ],
+  "log_does_not_contain": ["ERROR:", "[JENNER-ERROR"],
+  "diagnostics": {"parse_warnings": [], "runtime_warnings": []}
+}

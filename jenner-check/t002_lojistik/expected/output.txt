@@ -1,0 +1,187 @@
+                                     
+---------------------------  --------
+Number of Observations Read        40
+Number of Observations Used        40
+
+            Response Profile             
+  Probability modeled is Qualified='No'  
+
+Ordered Value  Qualified  Total Frequency
+-------------  ---------  ---------------
+            1  No                      21
+            2  Yes                     19
+
+        Class Level Information         
+
+Class        Levels  Values             
+---------  --------  -------------------
+Qualified         2  No Yes             
+Training          3  Advanced Basic None
+
+                                             
+---------------------------------------------
+Convergence criterion (GCONV=1E-8) satisfied.
+
+The LOGISTIC Procedure
+Response Variable: Qualified
+
+Criterion     Value
+---------  --------
+AIC          48.887
+-2 Log L     36.887
+SC           59.020
+
+                                                   
+--------  --------  ---------------------  --------
+R-Square    0.3697  Max-rescaled R-Square    0.4934
+
+             Analysis of Maximum Likelihood Estimates              
+
+Parameter     Estimate  Standard Error  Wald Chi-Square  Pr > ChiSq
+------------  --------  --------------  ---------------  ----------
+Intercept       3.8280          2.3774           2.5927      0.1074
+Confidence     -0.0066          0.0350           0.0355      0.8505
+SteerControl   -0.0178          0.0338           0.2773      0.5985
+TheoryTest     -0.0062          0.0263           0.0556      0.8136
+Training       -3.3579          1.5289           4.8236      0.0281
+Training       -2.2874          1.4997           2.3263      0.1272
+
+Hosmer and Lemeshow Goodness-of-Fit Test
+
+Chi-Square        DF  Pr > ChiSq
+----------  --------  ----------
+    4.4541         8      0.8140
+
+                       Odds Ratio Estimates                       
+
+Effect        Point Estimate  95% Wald CL Lower  95% Wald CL Upper
+------------  --------------  -----------------  -----------------
+Confidence             0.993              0.928              1.064
+SteerControl           0.982              0.919              1.050
+TheoryTest             0.994              0.944              1.046
+Training               0.035              0.002              0.697
+Training               0.102              0.005              1.919
+
+                                                   The FREQ Procedure
+                                     
+---------------------------  --------
+Number of Observations Read        40
+Number of Observations Used        40
+
+            Response Profile             
+  Probability modeled is Qualified='No'  
+
+Ordered Value  Qualified  Total Frequency
+-------------  ---------  ---------------
+            1  No                      21
+            2  Yes                     19
+
+        Class Level Information         
+
+Class        Levels  Values             
+---------  --------  -------------------
+Qualified         2  No Yes             
+Training          3  Advanced Basic None
+
+                                             
+---------------------------------------------
+Convergence criterion (GCONV=1E-8) satisfied.
+
+The LOGISTIC Procedure
+Response Variable: Qualified
+
+Criterion     Value
+---------  --------
+AIC          43.375
+-2 Log L     37.375
+SC           48.442
+
+                                                   
+--------  --------  ---------------------  --------
+R-Square    0.3620  Max-rescaled R-Square    0.4831
+
+            Analysis of Maximum Likelihood Estimates            
+
+Parameter  Estimate  Standard Error  Wald Chi-Square  Pr > ChiSq
+---------  --------  --------------  ---------------  ----------
+Intercept    2.5649          1.0377           6.1090      0.0134
+Training    -3.9512          1.2221          10.4529      0.0012
+Training    -2.7473          1.2015           5.2283      0.0222
+
+Hosmer and Lemeshow Goodness-of-Fit Test
+
+Chi-Square        DF  Pr > ChiSq
+----------  --------  ----------
+   16.0370         5      0.0067
+
+                     Odds Ratio Estimates                     
+
+Effect    Point Estimate  95% Wald CL Lower  95% Wald CL Upper
+--------  --------------  -----------------  -----------------
+Training           0.019              0.002              0.211
+Training           0.064              0.006              0.675
+
+       Summary of Backward Selection        
+
+    Step  Effect    Variable      Pr > ChiSq
+--------  --------  ------------  ----------
+       1  Removed   Confidence        0.8505
+       2  Removed   TheoryTest        0.8051
+       3  Removed   SteerControl      0.5381
+
+Variables Selected
+
+Variable
+--------
+Training
+
+                                                   The FREQ Procedure
+                                     
+---------------------------  --------
+Number of Observations Read        40
+Number of Observations Used        40
+
+   Model Information   
+
+                       
+-------------  --------
+Link Function  glogit  
+
+                                             
+---------------------------------------------
+Convergence criterion (GCONV=1E-8) satisfied.
+
+The LOGISTIC Procedure
+Response Variable: Training
+
+Criterion     Value
+---------  --------
+AIC          71.181
+-2 Log L     55.181
+SC           84.692
+
+             Analysis of Maximum Likelihood Estimates              
+
+Parameter     Estimate  Standard Error  Wald Chi-Square  Pr > ChiSq
+------------  --------  --------------  ---------------  ----------
+Intercept       4.8099          3.0191           2.5382      0.1111
+Confidence     -0.0047          0.0369           0.0162      0.8988
+SpeedControl   -0.0311          0.0440           0.4994      0.4797
+TheoryTest     -0.0463          0.0267           3.0100      0.0828
+Intercept      12.0541          4.1296           8.5205      0.0035
+Confidence     -0.1291          0.0656           3.8681      0.0492
+SpeedControl   -0.1181          0.0584           4.0976      0.0429
+TheoryTest     -0.0125          0.0365           0.1182      0.7309
+
+                       Odds Ratio Estimates                       
+
+Effect        Point Estimate  95% Wald CL Lower  95% Wald CL Upper
+------------  --------------  -----------------  -----------------
+Confidence             0.995              0.926              1.070
+SpeedControl           0.969              0.889              1.057
+TheoryTest             0.955              0.906              1.006
+Confidence             0.879              0.773              1.000
+SpeedControl           0.889              0.793              0.996
+TheoryTest             0.988              0.919              1.061
+
+                                                   The FREQ Procedure
