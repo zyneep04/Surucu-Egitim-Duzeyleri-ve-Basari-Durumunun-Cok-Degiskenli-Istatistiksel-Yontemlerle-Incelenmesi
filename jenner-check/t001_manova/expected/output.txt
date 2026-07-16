@@ -1,0 +1,165 @@
+
+                          The DISCRIM Procedure
+
+      Total Sample Size          40    DF Total              39
+      Variables                   3    DF Within Classes     37
+      Classes                     3
+
+                        Prior Probabilities for Classification
+
+                        Advanced       Basic        None
+
+     Prior                0.3750      0.2750      0.3500
+     Frequency                15          11          14
+
+                      Class Level Information for Discriminant Analysis
+
+      Advanced: 59.0107  55.2040  73.4307
+      Basic: 54.3300  52.1909  60.7036
+      None: 36.0886  33.0714  65.6021
+
+               Classification Summary for Calibration Data: Classification Results
+
+          10     3     2
+           3     7     1
+           0     2    12
+
+      Error Count Estimates for Classification Results
+      Total Error Rate: 0.2750
+
+                         The GLM Procedure                         
+                 Dependent Variable: speedcontrol                  
+
+Source          DF  Sum of Squares  Mean Square   F Value    Pr > F
+--------  --------  --------------  -----------  --------  --------
+Training         2      4129.92741   2064.96371     13.46    <.0001
+Error           37      5676.57826    153.42103                    
+
+Root MSE          12.38632    R-Square            0.4211
+Adj R-Sq            0.3899
+
+      Means for Effect: Training      
+
+Level         Mean   Std Dev         N
+--------  --------  --------  --------
+Advanced  59.01067  11.54454        15
+Basic     54.33000   8.66134        11
+None      36.08857  15.34356        14
+
+Levene's Test for Homogeneity of Variance
+
+Statistic    Pr > F
+---------  --------
+   0.8094    0.4528
+
+                  Dependent Variable: confidence                   
+
+Source          DF  Sum of Squares  Mean Square   F Value    Pr > F
+--------  --------  --------------  -----------  --------  --------
+training         2      4016.55094   2008.27547     12.97    <.0001
+Error           37      5726.95562    154.78258                    
+
+                  Dependent Variable: theorytest                   
+
+Source          DF  Sum of Squares  Mean Square   F Value    Pr > F
+--------  --------  --------------  -----------  --------  --------
+training         2      1082.28889    541.14445      2.05    0.1436
+Error           37      9783.76118    264.42598                    
+
+MANOVA Test Criteria and F Approximations for the Hypothesis of No Overall Training Effect
+
+Statistic                  Value   F Value    Num DF    Den DF    Pr > F
+----------------------  --------  --------  --------  --------  --------
+Wilks' Lambda           0.438438      5.95         6        70    <.0001
+Pillai's Trace          0.607647      5.24         6        72    0.0002
+Hotelling-Lawley Trace  1.175710      6.66         6        68    <.0001
+Roy's Greatest Root     1.078223     12.94         3        36    <.0001
+
+                              The GLM Procedure                              
+                      Dependent Variable: speedcontrol                       
+
+Source                    DF  Sum of Squares  Mean Square   F Value    Pr > F
+------------------  --------  --------------  -----------  --------  --------
+Training                   2      2771.20194   1385.60097      8.40    0.0012
+Reactions                  2        59.37695     29.68848      0.18    0.8362
+Training:Reactions         4       528.06936    132.01734      0.80    0.5344
+Error                     31      5114.79619    164.99343                    
+
+Root MSE          12.84498    R-Square            0.4784
+Adj R-Sq            0.3438
+
+      Means for Effect: Training      
+
+Level         Mean   Std Dev         N
+--------  --------  --------  --------
+Advanced  59.01067  11.54454        15
+Basic     54.33000   8.66134        11
+None      36.08857  15.34356        14
+
+     Means for Effect: Reactions      
+
+Level         Mean   Std Dev         N
+--------  --------  --------  --------
+Average   52.42889  19.85749        18
+Fast      46.24000  12.29557         9
+Slow      48.31923  11.64419        13
+
+Least Squares Means for Training*Reactions
+
+Level               LSMean  Standard Error
+----------------  --------  --------------
+Advanced*Average   60.4400          4.5414
+Basic*Average      57.1167          5.2439
+None*Average       29.3750          6.4225
+Advanced*Fast      55.2233          7.4161
+Basic*Fast         55.0950          9.0828
+None*Fast          35.0750          6.4225
+Advanced*Slow      58.9925          6.4225
+Basic*Slow         48.2467          7.4161
+None*Slow          41.2400          5.2439
+
+                       Dependent Variable: confidence                        
+
+Source                    DF  Sum of Squares  Mean Square   F Value    Pr > F
+------------------  --------  --------------  -----------  --------  --------
+training                   2      1573.02994    786.51497      4.73    0.0161
+reactions                  2        58.74703     29.37352      0.18    0.8388
+training*reactions         4       223.35725     55.83931      0.34    0.8516
+Error                     31      5151.58785    166.18025                    
+
+                       Dependent Variable: theorytest                        
+
+Source                    DF  Sum of Squares  Mean Square   F Value    Pr > F
+------------------  --------  --------------  -----------  --------  --------
+training                   2       808.64973    404.32486      1.55    0.2280
+reactions                  2       214.77096    107.38548      0.41    0.6659
+training*reactions         4      1081.20148    270.30037      1.04    0.4039
+Error                     31      8080.34651    260.65634                    
+
+MANOVA Test Criteria and F Approximations for the Hypothesis of No Overall Training Effect
+
+Statistic                  Value   F Value    Num DF    Den DF    Pr > F
+----------------------  --------  --------  --------  --------  --------
+Wilks' Lambda           0.410603      5.42         6        58    0.0002
+Pillai's Trace          0.647309      4.79         6        60    0.0005
+Hotelling-Lawley Trace  1.294399      6.04         6        56    <.0001
+Roy's Greatest Root     1.174290     11.74         3        30    <.0001
+
+MANOVA Test Criteria and F Approximations for the Hypothesis of No Overall Reactions Effect
+
+Statistic                  Value   F Value    Num DF    Den DF    Pr > F
+----------------------  --------  --------  --------  --------  --------
+Wilks' Lambda           0.839012      0.89         6        58    0.5106
+Pillai's Trace          0.162491      0.88         6        60    0.5121
+Hotelling-Lawley Trace  0.190086      0.89         6        56    0.5106
+Roy's Greatest Root     0.180142      1.80         3        30    0.1682
+
+MANOVA Test Criteria and F Approximations for the Hypothesis of No Overall Training*Reactions Effect
+
+Statistic                  Value   F Value    Num DF    Den DF    Pr > F
+----------------------  --------  --------  --------  --------  --------
+Wilks' Lambda           0.776752      0.64        12        77    0.7990
+Pillai's Trace          0.236603      0.66        12        93    0.7818
+Hotelling-Lawley Trace  0.270492      0.62        12        83    0.8164
+Roy's Greatest Root     0.190701      1.48         4        31    0.2328
+

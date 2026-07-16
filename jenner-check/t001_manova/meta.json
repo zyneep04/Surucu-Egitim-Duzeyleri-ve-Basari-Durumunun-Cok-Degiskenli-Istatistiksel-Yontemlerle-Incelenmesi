@@ -1,0 +1,7 @@
+{
+  "bundle": "t001_manova",
+  "source_file": "Manova.sas",
+  "source_blob_sha": "a7454f88d4107a2fe1c1ee7e4a73cfe0cf314fc7",
+  "source_commit": "f8f0fe96f6aaf7236517eb7190edd1381c9d0bb6",
+  "notes": "Runs the repo's one-way and two-way MANOVA on driver-training scores (PROC DISCRIM homogeneity test + PROC GLM/MANOVA on Training and Training*Reactions). Original read Drivers from an SPSS .sav import; this bundle builds an equivalent 40-row Drivers dataset in-line, sampled from the repo's own DriversLicenseData.csv. Fixed one script typo (CLASSES -> CLASS, the documented PROC DISCRIM statement name) so it parses; all PROC logic and options are otherwise unchanged."
+}

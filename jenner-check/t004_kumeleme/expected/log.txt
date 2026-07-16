@@ -1,0 +1,64 @@
+NOTE: Jenner v1.5.30 (build v1.5.30+unknown.20260715T062217Z.x86_64-unknown-linux-gnu)
+
+NOTE: Option OBS changed to 100.
+NOTE: DATA DriversKumelemeOrneklem
+
+NOTE: Processing inline DATALINES (40 lines)
+
+NOTE: Read 40 rows from DATALINES.
+NOTE: Wrote DriversKumelemeOrneklem (40 rows, 4 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: PROC CLUSTER data=DriversKumelemeOrneklem method=Ward
+
+NOTE: Using native Rust for hierarchical clustering
+NOTE: ODS plot written: cluster_dendrogram.spec.json
+NOTE: PROC CLUSTER ODS Graphics generated.
+NOTE: PROC CLUSTER: 40 observations, 3 variables clustered using Ward method
+NOTE: PROC TREE data=DriversKumelemeOrneklem
+
+NOTE: PROC TREE: Processed tree using Python/scipy
+NOTE: PROC FASTCLUS data=DriversKumelemeOrneklem maxclusters=3
+
+NOTE: Using Python/scikit-learn for k-means clustering
+NOTE: PROC FASTCLUS: 40 observations, 3 variables, 3 clusters using k-means
+NOTE: PROC GLM data=clust
+
+NOTE: Warning message:
+NOTE: In file(paste0("<wrapper>", .jen_rfd), "rb") :
+NOTE:   using 'raw = TRUE' because '<wrapper>' is a fifo or pipe
+NOTE: Warning message:
+NOTE: In readLines(file("stdin")) : incomplete final line found on 'stdin'
+NOTE: ODS plot written: glm_residuals_vs_predicted.spec.json
+NOTE: ODS plot written: glm_residual_histogram_panel.spec.json
+NOTE: ODS plot written: glm_residuals_vs_obs_order.spec.json
+NOTE: ODS plot written: glm_qq_plot.spec.json
+NOTE: PROC GLM ODS Graphics generated.
+NOTE: PROC GLM statement used.
+NOTE: PROC GLM data=clust
+
+NOTE: Warning message:
+NOTE: In file(paste0("<wrapper>", .jen_rfd), "rb") :
+NOTE:   using 'raw = TRUE' because '<wrapper>' is a fifo or pipe
+NOTE: Warning message:
+NOTE: In readLines(file("stdin")) : incomplete final line found on 'stdin'
+NOTE: ODS plot written: glm_residuals_vs_predicted.spec.json
+NOTE: ODS plot written: glm_residual_histogram_panel.spec.json
+NOTE: ODS plot written: glm_residuals_vs_obs_order.spec.json
+NOTE: ODS plot written: glm_qq_plot.spec.json
+NOTE: PROC GLM ODS Graphics generated.
+NOTE: PROC GLM statement used.
+NOTE: PROC GLM data=clust
+
+NOTE: Warning message:
+NOTE: In file(paste0("<wrapper>", .jen_rfd), "rb") :
+NOTE:   using 'raw = TRUE' because '<wrapper>' is a fifo or pipe
+NOTE: Warning message:
+NOTE: In readLines(file("stdin")) : incomplete final line found on 'stdin'
+NOTE: ODS plot written: glm_residuals_vs_predicted.spec.json
+NOTE: ODS plot written: glm_residual_histogram_panel.spec.json
+NOTE: ODS plot written: glm_residuals_vs_obs_order.spec.json
+NOTE: ODS plot written: glm_qq_plot.spec.json
+NOTE: PROC GLM ODS Graphics generated.
+NOTE: PROC GLM statement used.

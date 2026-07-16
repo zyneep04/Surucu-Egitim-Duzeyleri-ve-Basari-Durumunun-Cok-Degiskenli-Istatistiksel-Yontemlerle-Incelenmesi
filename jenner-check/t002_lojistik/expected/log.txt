@@ -1,0 +1,41 @@
+NOTE: Jenner v1.5.30 (build v1.5.30+unknown.20260715T062217Z.x86_64-unknown-linux-gnu)
+
+NOTE: Option OBS changed to 100.
+NOTE: DATA Drivers
+
+NOTE: Processing inline DATALINES (40 lines)
+
+NOTE: Read 40 rows from DATALINES.
+NOTE: Wrote Drivers (40 rows, 17 columns).
+NOTE: DATA elapsed:
+  wall  0.00 seconds
+  cpu   0.00 seconds
+NOTE: PROC LOGISTIC data=Drivers
+
+NOTE: Using Python statsmodels.api.Logit version 0.14.6
+NOTE: Output dataset outdata_bin written with 40 observations.
+NOTE: ODS plot written: logistic_oddsratio.spec.json
+NOTE: ODS plot written: logistic_roc.spec.json
+NOTE: PROC LOGISTIC ODS Graphics generated.
+NOTE: PROC LOGISTIC completed. Results written to: ./ods_output/logistic_results.spec.json
+NOTE: PROC FREQ
+NOTE: PROC FREQ statement used.
+NOTE: PROC LOGISTIC data=Drivers
+
+NOTE: Using Python statsmodels.api.Logit version 0.14.6
+NOTE: Output dataset outdata_step written with 40 observations.
+NOTE: ODS plot written: logistic_oddsratio.spec.json
+NOTE: ODS plot written: logistic_roc.spec.json
+NOTE: PROC LOGISTIC ODS Graphics generated.
+NOTE: PROC LOGISTIC completed. Results written to: ./ods_output/logistic_results.spec.json
+NOTE: PROC FREQ
+NOTE: PROC FREQ statement used.
+NOTE: PROC LOGISTIC data=Drivers
+
+NOTE: Using Python statsmodels.api.Logit version 0.14.6
+NOTE: Output dataset outdata_multi written with 40 observations.
+NOTE: ODS plot written: logistic_oddsratio.spec.json
+NOTE: PROC LOGISTIC ODS Graphics generated.
+NOTE: PROC LOGISTIC completed. Results written to: ./ods_output/logistic_results.spec.json
+NOTE: PROC FREQ
+NOTE: PROC FREQ statement used.
